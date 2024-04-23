@@ -7,9 +7,10 @@
       <div class="row">
         <div class="col-md-4">
           <div class="text-end">
-            <p>Product name</p>
-            <p>Product name</p>
-            <p>Product name</p>
+            <p>Tên sách</p>
+            <p>Giá sách</p>
+            <p>Số lượng sách</p>
+            <p>Năm xuất bản</p>
           </div>
         </div>
         <div class="col-md-4">
@@ -18,7 +19,7 @@
             <input
               type="text"
               class="form-control mb-3"
-              placeholder="Enter product name"
+              placeholder="Tên sách"
               v-model="product.name"
               v-bind:class="{ 'is-invalid': error.name }"
               @blur="validate()"
@@ -27,18 +28,26 @@
             <input
               type="text"
               class="form-control mb-3"
-              placeholder="Enter product price"
+              placeholder="Giá sách"
               v-model="product.price"
               v-bind:class="{ 'is-invalid': error.price }"
               @blur="validate()"
             />
-            <div class="feedback-invalid">{{ error.description }}</div>
+            <div class="feedback-invalid">{{ error.number }}</div>
             <input
               type="text"
               class="form-control"
-              placeholder="Enter product description"
-              v-model="product.description"
-              v-bind:class="{ 'is-invalid': error.description }"
+              placeholder="Số lượng"
+              v-model="product.number"
+              v-bind:class="{ 'is-invalid': error.number }"
+              @blur="validate()"
+            />
+            <input
+              type="date"
+              class="form-control"
+              placeholder="Năm xuất bản"
+              v-model="product.year"
+              v-bind:class="{ 'is-invalid': error.year }"
               @blur="validate()"
             />
             <div class="row py-5">
@@ -69,12 +78,14 @@ export default {
       error: {
         name: "",
         price: "",
-        description: "",
+        number: "",
+        year: "",
       },
       product: {
         name: "",
         price: "",
-        description: "",
+        number: "",
+        year: "",
       },
     };
   },
@@ -90,28 +101,29 @@ export default {
       this.error = {
         name: "",
         price: "",
-        description: "",
+        number: "",
+        year: "",
       };
       if (!this.product.name) {
         this.error.name = "bắt buộc phải nhập Tên sách";
         isValid = false;
       }
       if (!this.product.price) {
-        this.error.price = "bắt buộc phải nhập Giá";
+        this.error.price = "bắt buộc phải nhập Giá sách";
         isValid = false;
       }
-      if (!this.product.description) {
-        this.error.description = "bắt buộc phải nhập Mô tả";
+      if (!this.product.number) {
+        this.error.number = "bắt buộc phải nhập năm sản xuất";
         isValid = false;
       }
       return isValid;
     },
     save() {
       if (this.validate()) {
-        if (this.product.id) {
+        if (this.$route.params.id) {
           this.$request
             .put(
-              `http://localhost:8000/api/products/${this.product.id}`,
+              `http://localhost:8000/v1/book/${this.product._id}`,
               this.product
             )
             .then((res) => {
@@ -127,8 +139,9 @@ export default {
           return;
         }
         this.$request
-          .post("http://localhost:8000/api/products", this.product)
+          .post("http://localhost:8000/v1/book/", this.product)
           .then((res) => {
+            console.log(res.data);
             if (res.data.success) {
               this.$router.push({ name: "product.list" }); // trả về trang danh sách
               return;
@@ -142,7 +155,7 @@ export default {
     },
     getProduct(productId) {
       this.$request
-        .get(`http://localhost:8000/api/products/${productId}`)
+        .get(`http://localhost:8000/v1/book/${productId}`)
         .then((res) => {
           this.product = res.data;
         });
@@ -150,7 +163,8 @@ export default {
     cancel() {
       this.product.name = "";
       this.product.price = "";
-      this.product.description = "";
+      this.product.number = "";
+      this.product.year = "";
     },
   },
 };

@@ -1,9 +1,7 @@
 <template>
   <nav class="my-2 my-md-0 mr-md-3">
     <router-link to="/"><span class="nav-item">Home</span></router-link>
-    <router-link to="/product"
-      ><span class="nav-item">Product</span>
-    </router-link>
+    <router-link to="/product"><span class="nav-item">Book</span> </router-link>
   </nav>
   <router-view />
 </template>

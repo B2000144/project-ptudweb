@@ -8,9 +8,10 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Product name</th>
-            <th>Price</th>
-            <th>Handle</th>
+            <th>Tên sách</th>
+            <th>Giá sách</th>
+            <th>Số lượng</th>
+            <th>Ngày xuất bản</th>
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -19,14 +20,15 @@
             <td>{{ index + 1 }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
-            <td>{{ product.description }}</td>
+            <td>{{ product.number }}</td>
+            <td>{{ product.year }}</td>
             <td>
               <router-link
-                :to="{ name: 'product.edit', params: { id: product.id } }"
+                :to="{ name: 'product.edit', params: { id: product._id } }"
                 ><button class="btn btn-primary">Sửa</button></router-link
               >
               |
-              <button class="btn btn-danger" @click="onDelete(product.id)">
+              <button class="btn btn-danger" @click="onDelete(product._id)">
                 Xóa
               </button>
             </td>
@@ -55,29 +57,29 @@ export default {
         this.products = res.data;
       });
     },
-    // onDelete(productId) {
-    //   this.$swal
-    //     .fire({
-    //       title: "Bạn có muốn xóa",
-    //       showDenyButton: false,
-    //       showCancelButton: true,
-    //       confirmButtonText: "Có",
-    //       denyButtonText: `Không`,
-    //     })
-    //     .then((result) => {
-    //       /* Read more about isConfirmed, isDenied below */
-    //       if (result.isConfirmed) {
-    //         this.$request
-    //           .delete(`http://localhost:8000/api/products/${productId}`)
-    //           .then((res) => {
-    //             if (res.data.success) {
-    //               this.$swal.fire("Đã xóa!", "", "success");
-    //               this.getAll();
-    //             }
-    //           });
-    //       }
-    //     });
-    // },
+    onDelete(productId) {
+      this.$swal
+        .fire({
+          title: "Bạn có muốn xóa",
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Có",
+          denyButtonText: `Không`,
+        })
+        .then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.$request
+              .delete(`http://localhost:8000/v1/book/${productId}`)
+              .then((res) => {
+                if (res.data.success) {
+                  this.$swal.fire("Đã xóa!", "", "success");
+                  this.getAll();
+                }
+              });
+          }
+        });
+    },
   },
 };
 </script>
