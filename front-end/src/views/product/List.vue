@@ -1,4 +1,5 @@
 <template>
+  <NavBar />
   <div class="container">
     <div class="text-center">
       <router-link to="/product/create"><p>Thêm mới</p></router-link>
@@ -16,19 +17,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr :key="index" v-for="(product, index) in products">
+          <tr :key="index" v-for="(book, index) in books">
             <td>{{ index + 1 }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.number }}</td>
-            <td>{{ product.year }}</td>
+            <td>{{ book.name }}</td>
+            <td>{{ book.price }}</td>
+            <td>{{ book.number }}</td>
+            <td>{{ book.year }}</td>
             <td>
               <router-link
-                :to="{ name: 'product.edit', params: { id: product._id } }"
+                :to="{ name: 'product.edit', params: { id: book._id } }"
                 ><button class="btn btn-primary">Sửa</button></router-link
               >
               |
-              <button class="btn btn-danger" @click="onDelete(product._id)">
+              <button class="btn btn-danger" @click="onDelete(book._id)">
                 Xóa
               </button>
             </td>
@@ -40,11 +41,13 @@
 </template>
 
 <script>
+import NavBar from "../nav/NavBar.vue";
 export default {
+  components: { NavBar },
   name: "product.list",
   data() {
     return {
-      products: [],
+      books: [],
     };
   },
   created() {
@@ -54,7 +57,7 @@ export default {
   methods: {
     getAll() {
       this.$request.get("http://localhost:8000/v1/book/").then((res) => {
-        this.products = res.data;
+        this.books = res.data;
       });
     },
     onDelete(productId) {
@@ -80,6 +83,12 @@ export default {
           }
         });
     },
+  },
+  mounted() {
+    let user = localStorage.getItem("user-info");
+    if (!user) {
+      this.$router.push({ name: "admin.login" });
+    }
   },
 };
 </script>

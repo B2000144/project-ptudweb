@@ -23,6 +23,21 @@ const routes = [
     name: "product.edit",
     component: () => import("../views/product/Create.vue"),
   },
+  {
+    path: "/admin/login",
+    name: "admin.login",
+    component: () => import("../views/admin/login.vue"),
+  },
+  {
+    path: "/book/form/:id",
+    name: "BrrowBook",
+    component: () => import("../views-user/BrrowBooks/Brrow.vue"),
+  },
+  {
+    path: "/checkBorrow",
+    name: "checkBorrow",
+    component: () => import("../views/admin/checkBorrow.vue"),
+  },
 ];
 
 const router = createRouter({

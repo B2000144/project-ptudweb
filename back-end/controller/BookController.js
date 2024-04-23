@@ -8,7 +8,7 @@ const bookController = {
         const publishing = Publishing.findById(req.body.publishing);
         await publishing.updateOne({ $push: { books: saveBook._id } });
       }
-      res.status(200).json(saveBook);
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({
         message: err.message,
@@ -40,7 +40,7 @@ const bookController = {
     try {
       const updateBook = await Book.findById(req.params.id);
       await updateBook.updateOne({ $set: req.body });
-      res.status(200).json(updateBook);
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({
         message: err.message,
@@ -54,9 +54,7 @@ const bookController = {
         { $pull: { books: req.params.id } }
       );
       await Book.findByIdAndDelete(req.params.id);
-      res.status(200).json({
-        message: "Book deleted",
-      });
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({
         message: err.message,

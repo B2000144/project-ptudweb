@@ -1,4 +1,5 @@
 <template>
+  <NavBar />
   <div class="container">
     <div class="text-center">
       <router-link to="/product">Quay lại</router-link>
@@ -20,7 +21,7 @@
               type="text"
               class="form-control mb-3"
               placeholder="Tên sách"
-              v-model="product.name"
+              v-model="book.name"
               v-bind:class="{ 'is-invalid': error.name }"
               @blur="validate()"
             />
@@ -29,7 +30,7 @@
               type="text"
               class="form-control mb-3"
               placeholder="Giá sách"
-              v-model="product.price"
+              v-model="book.price"
               v-bind:class="{ 'is-invalid': error.price }"
               @blur="validate()"
             />
@@ -38,7 +39,7 @@
               type="text"
               class="form-control"
               placeholder="Số lượng"
-              v-model="product.number"
+              v-model="book.number"
               v-bind:class="{ 'is-invalid': error.number }"
               @blur="validate()"
             />
@@ -46,7 +47,7 @@
               type="date"
               class="form-control"
               placeholder="Năm xuất bản"
-              v-model="product.year"
+              v-model="book.year"
               v-bind:class="{ 'is-invalid': error.year }"
               @blur="validate()"
             />
@@ -71,7 +72,12 @@
 </template>
 
 <script>
+import NavBar from "../nav/NavBar.vue";
+
 export default {
+  components: {
+    NavBar,
+  },
   name: "CreateProduct",
   data() {
     return {
@@ -81,7 +87,7 @@ export default {
         number: "",
         year: "",
       },
-      product: {
+      book: {
         name: "",
         price: "",
         number: "",
@@ -92,7 +98,7 @@ export default {
   created() {
     let productId = this.$route.params.id;
     if (productId) {
-      this.getProduct(productId);
+      this.getBook(productId);
     }
   },
   methods: {
@@ -104,15 +110,15 @@ export default {
         number: "",
         year: "",
       };
-      if (!this.product.name) {
+      if (!this.book.name) {
         this.error.name = "bắt buộc phải nhập Tên sách";
         isValid = false;
       }
-      if (!this.product.price) {
+      if (!this.book.price) {
         this.error.price = "bắt buộc phải nhập Giá sách";
         isValid = false;
       }
-      if (!this.product.number) {
+      if (!this.book.number) {
         this.error.number = "bắt buộc phải nhập năm sản xuất";
         isValid = false;
       }
@@ -122,10 +128,7 @@ export default {
       if (this.validate()) {
         if (this.$route.params.id) {
           this.$request
-            .put(
-              `http://localhost:8000/v1/book/${this.product._id}`,
-              this.product
-            )
+            .put(`http://localhost:8000/v1/book/${this.book._id}`, this.book)
             .then((res) => {
               if (res.data.success) {
                 this.$router.push({ name: "product.list" }); // trả về trang danh sách
@@ -139,7 +142,7 @@ export default {
           return;
         }
         this.$request
-          .post("http://localhost:8000/v1/book/", this.product)
+          .post("http://localhost:8000/v1/book/", this.book)
           .then((res) => {
             console.log(res.data);
             if (res.data.success) {
@@ -153,18 +156,18 @@ export default {
           });
       }
     },
-    getProduct(productId) {
+    getBook(bookId) {
       this.$request
-        .get(`http://localhost:8000/v1/book/${productId}`)
+        .get(`http://localhost:8000/v1/book/${bookId}`)
         .then((res) => {
-          this.product = res.data;
+          this.book = res.data;
         });
     },
     cancel() {
-      this.product.name = "";
-      this.product.price = "";
-      this.product.number = "";
-      this.product.year = "";
+      this.book.name = "";
+      this.book.price = "";
+      this.book.number = "";
+      this.book.year = "";
     },
   },
 };
