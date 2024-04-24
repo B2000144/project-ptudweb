@@ -12,6 +12,7 @@
             <th>Tên sách</th>
             <th>Giá sách</th>
             <th>Ngày xuất bản</th>
+            <th>Nhà xuất bản</th>
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -21,6 +22,10 @@
             <td>{{ book.name }}</td>
             <td>{{ book.price }}</td>
             <td>{{ book.year }}</td>
+            <td>
+              {{ book.publishing ? book.publishing.publishing : "Unknown" }}
+            </td>
+
             <td>
               <router-link :to="{ name: 'BrrowBook', params: { id: book._id } }"
                 ><span class="btn btn-warning">Mượn sách</span></router-link
@@ -48,6 +53,7 @@ export default {
     let result = await this.$request.get("http://localhost:8000/v1/book/");
     console.warn(result);
     this.books = result.data;
+    console.warn(this.books);
   },
 };
 </script>

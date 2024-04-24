@@ -5,7 +5,7 @@ const PublishingController = {
     try {
       const newPublishing = new Publishing(req.body);
       const savePublishing = await newPublishing.save();
-      res.status(200).json(savePublishing);
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({
         message: err.message,
@@ -39,7 +39,7 @@ const PublishingController = {
     try {
       const updatePublishing = await Publishing.findById(req.params.id);
       await updatePublishing.updateOne({ $set: req.body });
-      res.status(200).json(updatePublishing);
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({
         message: err.message,
@@ -53,7 +53,7 @@ const PublishingController = {
         { publishing: null }
       );
       await Publishing.findByIdAndDelete(req.params.id);
-      res.status(200).json("deleted");
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({
         message: err.message,

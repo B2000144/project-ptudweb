@@ -38,6 +38,21 @@ const routes = [
     name: "checkBorrow",
     component: () => import("../views/admin/checkBorrow.vue"),
   },
+  {
+    path: "/publishing",
+    name: "publishing",
+    component: () => import("../views/admin/publishing.vue"),
+  },
+  {
+    path: "/publishing/create/",
+    name: "CreatePublishing",
+    component: () => import("../views/admin/createPublishing.vue"),
+  },
+  {
+    path: "/publishing/edit/:id",
+    name: "Publishing.eidt",
+    component: () => import("../views/admin/createPublishing.vue"),
+  },
 ];
 
 const router = createRouter({

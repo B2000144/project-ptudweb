@@ -7,6 +7,9 @@
     <router-link to="/checkBorrow"
       ><span class="nav-item">Sinh viên mượn sách</span>
     </router-link>
+    <router-link to="/publishing"
+      ><span class="nav-item">Nhà xuất bản</span>
+    </router-link>
     <span @click="logout" class="nav-item logout">Logout</span>
   </nav>
   <router-view />

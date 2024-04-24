@@ -54,6 +54,7 @@ export default {
       }
     },
   },
+  // nếu đã đăng nhập vào và username được lưu vào localStorage thì không được đăng nhập lại
   mounted() {
     let user = localStorage.getItem("user-info");
     if (user) {

@@ -1,61 +1,37 @@
 <template>
-  <NavBar />
+  <Nav />
   <div class="container">
     <div class="text-center">
-      <router-link to="/product">Quay lại</router-link>
+      <router-link to="/publishing">Quay lại</router-link>
     </div>
     <form action="" @submit.prevent="save()">
       <div class="row">
         <div class="col-md-4">
           <div class="text-end">
-            <p>Tên sách</p>
-            <p>Giá sách</p>
-            <p>Số lượng sách</p>
-            <p>Năm xuất bản</p>
+            <p>Tên Nhà xuất bản</p>
+            <p>Địa chỉ</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="d-flex flex-column">
-            <div class="feedback-invalid">{{ error.name }}</div>
+            <div class="feedback-invalid">{{ error.publishing }}</div>
             <input
               type="text"
               class="form-control mb-3"
-              placeholder="Tên sách"
-              v-model="book.name"
-              v-bind:class="{ 'is-invalid': error.name }"
+              placeholder="Tên NXB"
+              v-model="book.publishing"
+              v-bind:class="{ 'is-invalid': error.publishing }"
               @blur="validate()"
             />
-            <div class="feedback-invalid">{{ error.price }}</div>
+            <div class="feedback-invalid">{{ error.address }}</div>
             <input
               type="text"
               class="form-control mb-3"
-              placeholder="Giá sách"
-              v-model="book.price"
-              v-bind:class="{ 'is-invalid': error.price }"
+              placeholder="Địa chỉ"
+              v-model="book.address"
+              v-bind:class="{ 'is-invalid': error.address }"
               @blur="validate()"
             />
-            <div class="feedback-invalid">{{ error.number }}</div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Số lượng"
-              v-model="book.number"
-              v-bind:class="{ 'is-invalid': error.number }"
-              @blur="validate()"
-            />
-            <input
-              type="date"
-              class="form-control"
-              placeholder="Năm xuất bản"
-              v-model="book.year"
-              v-bind:class="{ 'is-invalid': error.year }"
-              @blur="validate()"
-            />
-            <select v-model="selectedPublishing">
-              <option v-for="pub in publishing" :key="pub._id" :value="pub._id">
-                {{ pub.publishing }}
-              </option>
-            </select>
             <div class="row py-5">
               <div class="col-md-6">
                 <input type="submit" class="btn btn-primary" value="Thêm" />
@@ -77,27 +53,22 @@
 </template>
 
 <script>
-import NavBar from "../nav/NavBar.vue";
+import Nav from "../nav/NavBar.vue";
 
 export default {
   components: {
-    NavBar,
+    Nav,
   },
-  name: "CreateProduct",
+  name: "CreatePublishing",
   data() {
     return {
       error: {
-        name: "",
-        price: "",
-        number: "",
-        year: "",
+        publishing: "",
+        address: "",
       },
       book: {
-        name: "",
-        price: "",
-        number: "",
-        year: "",
         publishing: "",
+        address: "",
       },
       publishing: [],
     };
@@ -113,34 +84,30 @@ export default {
     validate() {
       let isValid = true;
       this.error = {
-        name: "",
-        price: "",
-        number: "",
-        year: "",
+        publishing: "",
+        address: "",
       };
-      if (!this.book.name) {
-        this.error.name = "bắt buộc phải nhập Tên sách";
+      if (!this.book.publishing) {
+        this.error.publishing = "bắt buộc phải nhập Tên sách";
         isValid = false;
       }
-      if (!this.book.price) {
-        this.error.price = "bắt buộc phải nhập Giá sách";
-        isValid = false;
-      }
-      if (!this.book.number) {
-        this.error.number = "bắt buộc phải nhập năm sản xuất";
+      if (!this.book.address) {
+        this.error.address = "bắt buộc phải nhập Giá sách";
         isValid = false;
       }
       return isValid;
     },
     save() {
       if (this.validate()) {
-        this.book.publishing = this.selectedPublishing;
         if (this.$route.params.id) {
           this.$request
-            .put(`http://localhost:8000/v1/book/${this.book._id}`, this.book)
+            .put(
+              `http://localhost:8000/v1/publishing/${this.book._id}`,
+              this.book
+            )
             .then((res) => {
               if (res.data.success) {
-                this.$router.push({ name: "product.list" }); // trả về trang danh sách
+                this.$router.push({ name: "publishing" }); // trả về trang danh sách
                 return;
               }
               alert("Something went wrong");
@@ -151,12 +118,12 @@ export default {
           return;
         }
         this.$request
-          .post("http://localhost:8000/v1/book/", this.book)
+          .post("http://localhost:8000/v1/publishing/", this.book)
           .then((res) => {
             // this.abook = res.data;
 
             if (res.data.success) {
-              this.$router.push({ name: "product.list" }); // trả về trang danh sách
+              this.$router.push({ name: "publishing" }); // trả về trang danh sách
               return;
             }
             alert("Something went wrong");
@@ -168,7 +135,7 @@ export default {
     },
     getBook(bookId) {
       this.$request
-        .get(`http://localhost:8000/v1/book/${bookId}`)
+        .get(`http://localhost:8000/v1/publishing/${bookId}`)
         .then((res) => {
           this.book = res.data;
         });
@@ -176,14 +143,11 @@ export default {
     getPublishing() {
       this.$request.get("http://localhost:8000/v1/publishing/").then((res) => {
         this.publishing = res.data;
-        console.log(this.publishing);
       });
     },
     cancel() {
-      this.book.name = "";
-      this.book.price = "";
-      this.book.number = "";
-      this.book.year = "";
+      this.book.publishing = "";
+      this.book.address = "";
     },
   },
 };

@@ -2,7 +2,7 @@
   <Nav />
   <div class="container">
     <div class="text-center py-5">
-      <span class="title">Thư viện trường học</span>
+      <span class="title">Sinh viên mượn sách</span>
     </div>
     <div class="card-deck mb-3 text-center">
       <table class="table table-bordered">
@@ -10,6 +10,8 @@
           <tr>
             <th>#</th>
             <th>Tên sinh viên</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
             <th>Sách đã mượn</th>
             <th>Ngày mượn</th>
             <th>Ngày trả</th>
@@ -20,6 +22,8 @@
           <tr :key="index" v-for="(borrow, index) in borrows">
             <td>{{ index + 1 }}</td>
             <td>{{ borrow.name }}</td>
+            <td>{{ borrow.phone }}</td>
+            <td>{{ borrow.address }}</td>
             <td>{{ borrow.namebook }}</td>
             <td>{{ borrow.dateborrow }}</td>
             <td>{{ borrow.datereturn }}</td>
@@ -85,4 +89,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.title {
+  font-size: 30px;
+  font-weight: bold;
+}
+</style>
