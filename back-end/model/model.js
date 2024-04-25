@@ -26,6 +26,12 @@ const BookSchema = new mongoose.Schema({
   year: {
     type: "String",
   },
+  author: {
+    type: "string",
+  },
+  img: {
+    type: "string",
+  },
 
   publishing: {
     type: mongoose.Schema.Types.ObjectId,

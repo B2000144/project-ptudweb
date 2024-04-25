@@ -10,9 +10,12 @@
           <tr>
             <th>#</th>
             <th>Tên sách</th>
+            <th>Hình ảnh</th>
             <th>Giá sách</th>
             <th>Số lượng</th>
             <th>Ngày xuất bản</th>
+            <th>Tác giả</th>
+            <th>Nhà xuất bản</th>
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -20,9 +23,12 @@
           <tr :key="index" v-for="(book, index) in books">
             <td>{{ index + 1 }}</td>
             <td>{{ book.name }}</td>
+            <td><img :src="book.img" alt="" class="img-book" /></td>
             <td>{{ book.price }}</td>
             <td>{{ book.number }}</td>
             <td>{{ book.year }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publishing ? book.publishing.publishing : "" }}</td>
             <td>
               <router-link
                 :to="{ name: 'product.edit', params: { id: book._id } }"
@@ -93,4 +99,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.img-book {
+  width: 100px;
+}
+</style>

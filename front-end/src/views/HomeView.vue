@@ -1,39 +1,20 @@
 <template>
   <Nav />
-  <div class="container">
-    <div class="text-center py-5">
-      <span class="title">Thư viện trường học</span>
-    </div>
-    <div class="card-deck mb-3 text-center">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Tên sách</th>
-            <th>Giá sách</th>
-            <th>Ngày xuất bản</th>
-            <th>Nhà xuất bản</th>
-            <th>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr :key="index" v-for="(book, index) in books">
-            <td>{{ index + 1 }}</td>
-            <td>{{ book.name }}</td>
-            <td>{{ book.price }}</td>
-            <td>{{ book.year }}</td>
-            <td>
-              {{ book.publishing ? book.publishing.publishing : "Unknown" }}
-            </td>
-
-            <td>
-              <router-link :to="{ name: 'BrrowBook', params: { id: book._id } }"
-                ><span class="btn btn-warning">Mượn sách</span></router-link
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-3 mb-4" v-for="book in books" :key="book._id">
+        <div class="card">
+          <router-link :to="{ name: 'detail', params: { id: book._id } }"
+            ><img :src="book.img" class="card-img-top img" alt="Product Image"
+          /></router-link>
+          <div class="card-body">
+            <h5 class="card-title">{{ book.name }}</h5>
+            <router-link :to="{ name: 'BrrowBook', params: { id: book._id } }"
+              ><span class="btn btn-warning">Mượn sách</span></router-link
+            >
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -62,5 +43,8 @@ export default {
 .title {
   font-size: 30px;
   font-weight: bold;
+}
+img {
+  height: 180px;
 }
 </style>

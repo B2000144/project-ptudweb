@@ -93,9 +93,16 @@
                 </option>
               </select>
             </div>
+
+            <div>
+              Đã chọn nhà xuất bản:
+              <span class="text-success">{{
+                book.publishing ? book.publishing.publishing : ""
+              }}</span>
+            </div>
             <div class="row py-5">
               <div class="col-md-6">
-                <input type="submit" class="btn btn-primary" value="Thêm mới" />
+                <input type="submit" class="btn btn-primary" value="Cập nhật" />
               </div>
               <div class="col-md-6">
                 <input
@@ -120,7 +127,7 @@ export default {
   components: {
     NavBar,
   },
-  name: "CreateProduct",
+  name: "product.edit",
   data() {
     return {
       error: {
@@ -128,8 +135,6 @@ export default {
         price: "",
         number: "",
         year: "",
-        author: "",
-        img: "",
       },
       book: {
         name: "",
@@ -144,7 +149,11 @@ export default {
     };
   },
   created() {
-    this.getPublishing();
+    let productId = this.$route.params.id;
+    if (productId) {
+      this.getBook(productId);
+      this.getPublishing();
+    }
   },
   methods: {
     validate() {
@@ -172,26 +181,33 @@ export default {
     save() {
       if (this.validate()) {
         this.book.publishing = this.selectedPublishing;
-        this.$request
-          .post("http://localhost:8000/v1/book/", this.book)
-          .then((res) => {
-            // this.abook = res.data;
-
-            if (res.data.success) {
-              this.$router.push({ name: "product.list" }); // trả về trang danh sách
-              return;
-            }
-            alert("Something went wrong");
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+        if (this.$route.params.id) {
+          this.$request
+            .put(`http://localhost:8000/v1/book/${this.book._id}`, this.book)
+            .then((res) => {
+              if (res.data.success) {
+                this.$router.push({ name: "product.list" });
+                return;
+              }
+              alert("Something went wrong");
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+          return;
+        }
       }
+    },
+    getBook(bookId) {
+      this.$request
+        .get(`http://localhost:8000/v1/book/${bookId}`)
+        .then((res) => {
+          this.book = res.data;
+        });
     },
     getPublishing() {
       this.$request.get("http://localhost:8000/v1/publishing/").then((res) => {
         this.publishing = res.data;
-        console.log("tồn tại", this.publishing);
       });
     },
     cancel() {

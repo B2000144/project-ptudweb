@@ -21,7 +21,7 @@ const routes = [
   {
     path: "/product/edit/:id",
     name: "product.edit",
-    component: () => import("../views/product/Create.vue"),
+    component: () => import("../views/product/update.vue"),
   },
   {
     path: "/admin/login",
@@ -52,6 +52,11 @@ const routes = [
     path: "/publishing/edit/:id",
     name: "Publishing.eidt",
     component: () => import("../views/admin/createPublishing.vue"),
+  },
+  {
+    path: "/book/detail/:id",
+    name: "detail",
+    component: () => import("../views-user/bookDetail/Detail.vue"),
   },
 ];
 
